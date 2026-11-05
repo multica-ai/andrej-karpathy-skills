@@ -116,18 +116,44 @@ This installs the guidelines as a Claude Code plugin, making the skill available
 
 New project:
 ```bash
-curl -o CLAUDE.md https://raw.githubusercontent.com/forrestchang/andrej-karpathy-skills/main/CLAUDE.md
+curl -o CLAUDE.md https://raw.githubusercontent.com/multica-ai/andrej-karpathy-skills/main/CLAUDE.md
 ```
 
 Existing project (append):
 ```bash
 echo "" >> CLAUDE.md
-curl https://raw.githubusercontent.com/forrestchang/andrej-karpathy-skills/main/CLAUDE.md >> CLAUDE.md
+curl https://raw.githubusercontent.com/multica-ai/andrej-karpathy-skills/main/CLAUDE.md >> CLAUDE.md
+```
+
+**Option C: AGENTS.md (Universal Agent Standard)**
+
+For coding agents that follow the open `AGENTS.md` standard (such as GitHub Copilot, Codex, Gemini CLI, Antigravity, OpenCode, Aider, and Cline):
+
+New project:
+```bash
+curl -o AGENTS.md https://raw.githubusercontent.com/multica-ai/andrej-karpathy-skills/main/AGENTS.md
+```
+
+Existing project (append):
+```bash
+echo "" >> AGENTS.md
+curl https://raw.githubusercontent.com/multica-ai/andrej-karpathy-skills/main/AGENTS.md >> AGENTS.md
 ```
 
 ## Using with Cursor
 
 This repository includes a committed Cursor project rule ([`.cursor/rules/karpathy-guidelines.mdc`](.cursor/rules/karpathy-guidelines.mdc)) so the same guidelines apply when you open the project in Cursor. See **[CURSOR.md](CURSOR.md)** for setup, using the rule in other projects, and how this relates to Claude Code.
+
+## Compatibility Matrix
+
+| Environment / Harness | Standard File / Format | Supported |
+|---|---|:---:|
+| **Claude Code** | `CLAUDE.md` / Plugin | ✅ |
+| **Cursor** | `.cursor/rules/*.mdc` | ✅ |
+| **Copilot / Codex / Gemini CLI** | `AGENTS.md` | ✅ |
+| **Antigravity (AGY)** | `AGENTS.md` / `SKILL.md` | ✅ |
+| **OpenCode / Aider / Cline** | `AGENTS.md` | ✅ |
+| **Agent Skills Standard** | `skills/karpathy-guidelines/SKILL.md` | ✅ |
 
 ## Key Insight
 

@@ -116,18 +116,44 @@ LLM 经常默默选择一种解释然后执行。这个原则强制明确推理�
 
 新项目：
 ```bash
-curl -o CLAUDE.md https://raw.githubusercontent.com/forrestchang/andrej-karpathy-skills/main/CLAUDE.md
+curl -o CLAUDE.md https://raw.githubusercontent.com/multica-ai/andrej-karpathy-skills/main/CLAUDE.md
 ```
 
 已有项目（追加）：
 ```bash
 echo "" >> CLAUDE.md
-curl https://raw.githubusercontent.com/forrestchang/andrej-karpathy-skills/main/CLAUDE.md >> CLAUDE.md
+curl https://raw.githubusercontent.com/multica-ai/andrej-karpathy-skills/main/CLAUDE.md >> CLAUDE.md
+```
+
+**选项 C：AGENTS.md（通用开放智能体标准）**
+
+对于遵循开放 `AGENTS.md` 标准的编码智能体（如 GitHub Copilot、Codex、Gemini CLI、Antigravity、OpenCode、Aider 和 Cline）：
+
+新项目：
+```bash
+curl -o AGENTS.md https://raw.githubusercontent.com/multica-ai/andrej-karpathy-skills/main/AGENTS.md
+```
+
+已有项目（追加）：
+```bash
+echo "" >> AGENTS.md
+curl https://raw.githubusercontent.com/multica-ai/andrej-karpathy-skills/main/AGENTS.md >> AGENTS.md
 ```
 
 ## 在 Cursor 中使用
 
 本仓库包含一个已提交的 Cursor 项目规则 ([`.cursor/rules/karpathy-guidelines.mdc`](.cursor/rules/karpathy-guidelines.mdc))，因此在 Cursor 中打开项目时同样适用这些指南。详情请参见 **[CURSOR.md](CURSOR.md)**，包括如何在其他项目中使用该规则，以及它与 Claude Code 的关系。
+
+## 兼容性矩阵
+
+| 环境 / 智能体工具 | 配置文件 / 格式 | 支持状态 |
+|---|---|:---:|
+| **Claude Code** | `CLAUDE.md` / Plugin | ✅ |
+| **Cursor** | `.cursor/rules/*.mdc` | ✅ |
+| **Copilot / Codex / Gemini CLI** | `AGENTS.md` | ✅ |
+| **Antigravity (AGY)** | `AGENTS.md` / `SKILL.md` | ✅ |
+| **OpenCode / Aider / Cline** | `AGENTS.md` | ✅ |
+| **Agent Skills 标准** | `skills/karpathy-guidelines/SKILL.md` | ✅ |
 
 ## 核心洞察
 
