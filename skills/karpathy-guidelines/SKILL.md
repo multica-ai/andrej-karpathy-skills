@@ -12,13 +12,15 @@ Behavioral guidelines to reduce common LLM coding mistakes, derived from [Andrej
 
 ## 1. Think Before Coding
 
-**Don't assume. Don't hide confusion. Surface tradeoffs.**
+**Make assumptions visible. Match clarification to risk. Surface tradeoffs.**
 
 Before implementing:
-- State your assumptions explicitly. If uncertain, ask.
-- If multiple interpretations exist, present them - don't pick silently.
+- Inspect available context first: the user's instructions, repository conventions, documentation, and relevant code. Use answers already provided instead of asking again.
+- For low-risk, reversible choices within the requested scope, state a reasonable assumption and proceed. Prefer existing conventions and the smallest useful change.
+- Ask when unresolved ambiguity materially affects correctness, scope, privacy, cost, or an irreversible action. Briefly explain the consequence and ask the smallest question needed to resolve it.
+- While waiting for a necessary answer, continue safe work that does not depend on it. Pause the affected action; silence or urgency does not supply an answer or authorization.
+- When interpretations have materially different outcomes, present the relevant alternatives and tradeoffs. Don't silently choose a consequential outcome merely because the code can be reverted.
 - If a simpler approach exists, say so. Push back when warranted.
-- If something is unclear, stop. Name what's confusing. Ask.
 
 ## 2. Simplicity First
 
@@ -64,4 +66,4 @@ For multi-step tasks, state a brief plan:
 3. [Step] → verify: [check]
 ```
 
-Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
+Strong success criteria let you loop independently. For vague criteria ("make it work"), inspect context and propose concrete checks; clarify only consequential unresolved choices.

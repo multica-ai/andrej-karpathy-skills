@@ -1,10 +1,10 @@
-# 受 Karpathy 启发的 Claude Code 指南
+# 受 Karpathy 启发的编码智能体指南
 
 > 查看我的新项目 [Multica](https://github.com/multica-ai/multica) —— 一个用于运行和管理编码智能体的开源平台，支持可复用的技能。
 >
 > 在 X 上关注我：[https://x.com/jiayuan_jy](https://x.com/jiayuan_jy)
 
-一个单一的 `CLAUDE.md` 文件，用于改善 Claude Code 的行为，源自 [Andrej Karpathy 的观察](https://x.com/karpathy/status/2015883857489522876) 关于 LLM 编码陷阱的总结。
+适用于 Codex、OpenCode、Claude Code 和 Cursor 的可复用编码智能体指南，源自 [Andrej Karpathy 的观察](https://x.com/karpathy/status/2015883857489522876) 关于 LLM 编码陷阱的总结。
 
 [English](./README.md) | 简体中文
 
@@ -20,7 +20,7 @@
 
 ## 解决方案
 
-四个原则，集中在一个文件中，直接解决这些问题：
+四个原则在技能和各编辑器格式之间保持一致，直接解决这些问题：
 
 | 原则 | 解决什么问题 |
 |-----------|-----------|
@@ -33,14 +33,17 @@
 
 ### 1. 编码前思考
 
-**不要假设。不要隐藏困惑。呈现权衡。**
+**明确说明假设。根据风险决定是否澄清。呈现权衡。**
 
-LLM 经常默默选择一种解释然后执行。这个原则强制明确推理：
+根据不确定性可能造成的后果来处理它：
 
-- **明确说明假设** — 如果不确定，询问而不是猜测
-- **呈现多种解释** — 当存在歧义时，不要默默选择
-- **适时提出异议** — 如果存在更简单的方法，说出来
-- **困惑时停下来** — 指出不清楚的地方并要求澄清
+- **先检查上下文** — 阅读用户指示和仓库约定，使用已有答案，不要重复询问。
+- **低风险选择可以继续** — 对请求范围内可逆的决定，说明合理假设，遵循现有模式并继续执行。
+- **澄清影响重大的歧义** — 如果尚未解决的选择会实质影响正确性、范围、隐私、成本或不可逆操作，说明后果并提出解决问题所需的最小问题。
+- **继续安全的独立工作** — 等待回答时，可以继续不依赖该答案的调查；暂停受影响的操作。沉默或紧迫性不构成回答或授权。
+- **呈现有意义的权衡** — 对结果有实质差异的解释，展示相关选项，并在适当时提出更简单的方法。代码可回退并不意味着其影响无关紧要。
+
+参见[示例](EXAMPLES.md#1-think-before-coding)，了解何时继续、何时询问，以及等待回答时如何开展独立工作。
 
 ### 2. 简洁优先
 
@@ -94,15 +97,29 @@ LLM 经常默默选择一种解释然后执行。这个原则强制明确推理�
 3. [步骤] → 验证: [检查]
 ```
 
-强有力的成功标准让 LLM 能够独立循环执行。弱标准（"让它工作"）需要不断澄清。
+强有力的成功标准让 LLM 能够独立循环执行。对于模糊的标准（"让它工作"），先检查上下文并提出具体检查项；仅澄清尚未解决且影响重大的选择。
 
 ## 安装
 
-**选项 A：Claude Code 插件（推荐）**
+### Codex 和 OpenCode
+
+使用通用的 [`karpathy-guidelines` 技能](skills/karpathy-guidelines/SKILL.md)，无需安装 Claude Code 或 Cursor。
+
+1. 克隆或下载**本分支仓库** `michaelchamboko/andrej-karpathy-skills`。
+2. 将整个 `skills/karpathy-guidelines` 目录复制到目标项目的 `.agents/skills/` 目录，形成 `.agents/skills/karpathy-guidelines/SKILL.md`。如果已有副本，替换前请比较并合并自定义内容。
+3. 在 Codex 或 OpenCode 中打开目标项目，请求使用 `karpathy-guidelines` 处理编码任务，并确认技能出现在可用列表中；如果尚未刷新发现结果，请重启宿主。
+
+两个宿主都支持此项目路径，参见官方 [Codex 技能文档](https://developers.openai.com/codex/skills/)和 [OpenCode 技能文档](https://opencode.ai/docs/skills/)。本仓库根目录的 `skills/` 是分发源目录，不是项目技能发现目录。
+
+技能在被选择或匹配任务时加载；安装技能不会使所有规则始终生效。如需持续生效的项目指导，请将所需规则合并到已有的 `AGENTS.md`，保留项目指示及共享策略引用。
+
+### 其他受支持的宿主
+
+**Claude Code 插件（可选）**
 
 在 Claude Code 中，首先添加插件市场：
 ```
-/plugin marketplace add forrestchang/andrej-karpathy-skills
+/plugin marketplace add michaelchamboko/andrej-karpathy-skills
 ```
 
 然后安装插件：
@@ -112,17 +129,17 @@ LLM 经常默默选择一种解释然后执行。这个原则强制明确推理�
 
 这会将指南安装为 Claude Code 插件，使其在你所有项目中可用。
 
-**选项 B：CLAUDE.md（按项目）**
+**CLAUDE.md（可选，按项目）**
 
 新项目：
 ```bash
-curl -o CLAUDE.md https://raw.githubusercontent.com/forrestchang/andrej-karpathy-skills/main/CLAUDE.md
+curl -o CLAUDE.md https://raw.githubusercontent.com/michaelchamboko/andrej-karpathy-skills/main/CLAUDE.md
 ```
 
 已有项目（追加）：
 ```bash
 echo "" >> CLAUDE.md
-curl https://raw.githubusercontent.com/forrestchang/andrej-karpathy-skills/main/CLAUDE.md >> CLAUDE.md
+curl https://raw.githubusercontent.com/michaelchamboko/andrej-karpathy-skills/main/CLAUDE.md >> CLAUDE.md
 ```
 
 ## 在 Cursor 中使用
@@ -143,12 +160,12 @@ curl https://raw.githubusercontent.com/forrestchang/andrej-karpathy-skills/main/
 
 - **diff 中不必要的改动更少** —— 只有请求的改动出现
 - **因过度复杂而导致的重写更少** —— 代码第一次就写得简洁
-- **澄清问题在实现之前提出** —— 而不是在犯错之后
+- **在行动前澄清影响重大的歧义** —— 常规工作在说明假设后继续执行
 - **干净、精简的 PR** —— 没有顺带的重构或"改进"
 
 ## 定制
 
-这些指南设计用于与项目特定指令合并。将它们添加到你现有的 `CLAUDE.md` 或创建一个新的。
+这些指南设计用于与项目特定指令合并。对于 Codex 和 OpenCode，将所需规则合并到已有的 `AGENTS.md`；对于 Claude Code，使用 `CLAUDE.md`。保留已有指示和共享策略引用。
 
 对于项目特定规则，添加如下章节：
 
