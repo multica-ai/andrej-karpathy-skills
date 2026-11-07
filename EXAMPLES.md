@@ -35,24 +35,23 @@ def export_users(format='json'):
 - Assumed which fields to include
 - Assumed CSV fieldnames without checking actual data structure
 
-**✅ What Should Happen (Surface Assumptions)**
+**✅ What Should Happen (Inspect, Then Ask About Consequences)**
 
+First inspect the existing export workflow and access policy. In this example,
+the repository establishes CSV downloads, but does not establish which customer
+records or sensitive fields may be included.
+
+```text
+The existing export flow uses CSV downloads, so I'll reuse that format.
+Which customer subset and fields should this export include, and who may access it?
+These choices determine which personal data is disclosed.
+
+While waiting, I'll inspect the existing authorization checks and export tests.
+I'll hold the data selection and export until those choices are resolved.
 ```
-Before implementing, I need to clarify:
 
-1. **Scope**: Export all users or filtered subset? (privacy implications)
-2. **Format**: You mentioned "export" - did you mean:
-   - Download file in browser?
-   - Background job with email notification?
-   - API endpoint returning data?
-3. **Fields**: Which user fields? (some might be sensitive)
-4. **Volume**: How many users typically? (affects approach)
-
-Simplest approach: Add an API endpoint that returns paginated JSON.
-Would need more info for file-based exports.
-
-What's your preference?
-```
+**Why ask:** A convenient default could expose private data. Existing conventions
+answer the format question, but do not authorize the export's contents or recipients.
 
 ### Example 2: Multiple Interpretations
 
@@ -68,29 +67,67 @@ async def search(query: str) -> List[Result]:
     # ... 200 lines of optimization code
 ```
 
-**✅ What Should Happen**
+**✅ What Should Happen (Continue Independent Investigation)**
 
+```text
+I'll inspect the search path, existing performance targets, and local benchmarks first.
 ```
-"Make the search faster" could mean:
 
-1. **Faster response time** (< 100ms instead of 500ms)
-   - Add database indexes
-   - Cache frequent queries
-   - Estimated effort: 2 hours
+If that context still leaves the objective unresolved:
 
-2. **Handle more concurrent searches** (throughput)
-   - Add async/await
-   - Connection pooling
-   - Estimated effort: 4 hours
-
-3. **Faster perceived speed** (UX)
-   - Show partial results immediately
-   - Progressive loading
-   - Estimated effort: 3 hours
-
-Current search takes ~500ms for typical queries. 
-Which aspect matters most for your use case?
+```text
+Should this prioritize response time for one search or throughput under concurrent load?
+That choice affects which optimization is useful. While waiting, I'll profile both
+locally without changing production settings or adding infrastructure.
 ```
+
+**Why ask:** The alternatives can require materially different changes. Local
+profiling can proceed safely without choosing an optimization or incurring new costs.
+
+### Example 3: Low-Risk, Reversible Choice
+
+**User Request:** "Make this button's spacing match the other form controls."
+
+**❌ Unnecessary Interruption**
+
+```text
+What exact pixel value should I use? I can't proceed without a number.
+```
+
+**✅ What Should Happen (Use Context and Proceed)**
+
+After inspecting adjacent controls and confirming they share a spacing token:
+
+```text
+The adjacent controls use the existing spacing token. I'll use it for this button
+and check the form layout at its supported viewport sizes.
+```
+
+**Why proceed:** The request and local conventions supply a reasonable choice.
+The change is limited, reversible, and introduces no consequential ambiguity.
+
+### Example 4: Urgency Does Not Resolve a Destructive Choice
+
+**User Request:** "Delete the old records now; we're in a hurry."
+
+**❌ Unsafe Assumption**
+
+```text
+I'll assume old means more than 30 days and delete them now.
+```
+
+**✅ What Should Happen (Pause the Affected Action)**
+
+After checking available policy and finding no retention cutoff:
+
+```text
+What retention cutoff and record types should this deletion use?
+The answer determines which data is permanently removed. I'll inspect the schema
+and backup status while waiting, but won't run the deletion without that scope.
+```
+
+**Why ask:** Neither urgency nor silence supplies a retention policy. A reversible
+script change does not make its data deletion reversible.
 
 ---
 
@@ -448,7 +485,7 @@ Plan for rate limiting:
    - Config file parsed correctly
 
 Each step is independently verifiable and deployable.
-Start with step 1?
+I'll start with step 1 and verify its behavior.
 ```
 
 ### Example 3: Test-First Verification
@@ -499,7 +536,7 @@ def sort_scores(scores):
 
 | Principle | Anti-Pattern | Fix |
 |-----------|-------------|-----|
-| Think Before Coding | Silently assumes file format, fields, scope | List assumptions explicitly, ask for clarification |
+| Think Before Coding | Silently assumes file format, fields, scope | Inspect context; state low-risk assumptions and proceed; clarify consequential ambiguity |
 | Simplicity First | Strategy pattern for single discount calculation | One function until complexity is actually needed |
 | Surgical Changes | Reformats quotes, adds type hints while fixing bug | Only change lines that fix the reported issue |
 | Goal-Driven | "I'll review and improve the code" | "Write test for bug X → make it pass → verify no regressions" |

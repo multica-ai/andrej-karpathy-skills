@@ -33,14 +33,17 @@ Four principles in one file that directly address these issues:
 
 ### 1. Think Before Coding
 
-**Don't assume. Don't hide confusion. Surface tradeoffs.**
+**Make assumptions visible. Match clarification to risk. Surface tradeoffs.**
 
-LLMs often pick an interpretation silently and run with it. This principle forces explicit reasoning:
+Resolve uncertainty in proportion to its consequences:
 
-- **State assumptions explicitly** — If uncertain, ask rather than guess
-- **Present multiple interpretations** — Don't pick silently when ambiguity exists
-- **Push back when warranted** — If a simpler approach exists, say so
-- **Stop when confused** — Name what's unclear and ask for clarification
+- **Inspect context first** — Read the user's instructions and repository conventions; use answers already available.
+- **Proceed on low-risk choices** — State a reasonable assumption for reversible decisions within scope and follow existing patterns.
+- **Ask about consequential ambiguity** — Clarify unresolved choices that materially affect correctness, scope, privacy, cost, or irreversible actions. Explain why the answer matters.
+- **Keep safe work moving** — While waiting, continue independent investigation. Pause the affected action; silence and urgency do not authorize it.
+- **Surface meaningful tradeoffs** — Present alternatives with materially different outcomes and suggest simpler approaches when warranted. Reversible code can still have consequential effects.
+
+See [the examples](EXAMPLES.md#1-think-before-coding) for when to proceed, ask, or continue independent work while waiting.
 
 ### 2. Simplicity First
 
@@ -94,7 +97,7 @@ For multi-step tasks, state a brief plan:
 3. [Step] → verify: [check]
 ```
 
-Strong success criteria let the LLM loop independently. Weak criteria ("make it work") require constant clarification.
+Strong success criteria let the LLM loop independently. For vague criteria ("make it work"), inspect context and propose concrete checks; clarify only consequential unresolved choices.
 
 ## Install
 
@@ -143,7 +146,7 @@ These guidelines are working if you see:
 
 - **Fewer unnecessary changes in diffs** — Only requested changes appear
 - **Fewer rewrites due to overcomplication** — Code is simple the first time
-- **Clarifying questions come before implementation** — Not after mistakes
+- **Consequential ambiguity is clarified before action** — Routine work proceeds with stated assumptions
 - **Clean, minimal PRs** — No drive-by refactoring or "improvements"
 
 ## Customization
