@@ -459,34 +459,37 @@ What's the specific auth issue you're seeing?
 # No clear verification steps
 ```
 
-**✅ What Should Happen (Incremental with Verification)**
+**✅ What Should Happen (Confirm Policy, Then Verify Incrementally)**
 
+First inspect existing API policy, deployment topology, and rate-limiting code.
+If the endpoint scope, caller identity, or request limits are not already specified:
+
+```text
+Which endpoints and request limits should apply, and should limits be per user or per IP?
+These choices determine which legitimate requests may be rejected. While waiting,
+I'll inspect the existing middleware and test setup without enforcing a new limit.
 ```
-Plan for rate limiting:
 
-1. Add basic in-memory rate limiting (single endpoint)
-   Verify: 
-   - Test: 100 requests → first 10 succeed, rest get 429
-   - Manual: curl endpoint 11 times, see rate limit error
+Once the policy is established, define checks around those values:
 
-2. Extract to middleware (apply to all endpoints)
-   Verify:
-   - Test: Rate limits apply to /users and /posts
-   - Existing endpoint tests still pass
+```text
+1. Add tests for the agreed policy.
+   Verify: Requests up to the limit succeed; the next gets 429; the window resets.
 
-3. Add Redis backend (for multi-server)
-   Verify:
-   - Test: Rate limit persists across app restarts
-   - Test: Two app instances share rate limit counter
+2. Implement the policy using the project's existing middleware and deployment pattern.
+   Verify: Limits apply to the intended endpoints and caller identities.
 
-4. Add configuration (rates per endpoint)
-   Verify:
-   - Test: /search allows 10/min, /users allows 100/min
-   - Config file parsed correctly
+3. Check regressions and deployment behavior.
+   Verify: Unaffected endpoints retain their behavior; for a multi-instance deployment,
+   the existing shared storage enforces the same limit across instances.
 
-Each step is independently verifiable and deployable.
-I'll start with step 1 and verify its behavior.
+I'll begin implementation once the policy is established. New infrastructure or
+cost requires resolving that choice before introducing it.
 ```
+
+**Why ask:** A small, reversible code change can still reject legitimate traffic.
+Explicit instructions or existing policy can supply the answer; do not ask again
+when that context already resolves the decision.
 
 ### Example 3: Test-First Verification
 

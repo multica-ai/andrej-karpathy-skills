@@ -1,10 +1,10 @@
-# Karpathy-Inspired Claude Code Guidelines
+# Karpathy-Inspired Coding Agent Guidelines
 
 > Check out my new project [Multica](https://github.com/multica-ai/multica) — an open-source platform for running and managing coding agents with reusable skills.
 >
 > Follow me on X: [https://x.com/jiayuan_jy](https://x.com/jiayuan_jy)
 
-A single `CLAUDE.md` file to improve Claude Code behavior, derived from [Andrej Karpathy's observations](https://x.com/karpathy/status/2015883857489522876) on LLM coding pitfalls.
+Reusable coding-agent guidelines for Codex, OpenCode, Claude Code, and Cursor, derived from [Andrej Karpathy's observations](https://x.com/karpathy/status/2015883857489522876) on LLM coding pitfalls.
 
 English | [简体中文](./README.zh.md)
 
@@ -20,7 +20,7 @@ From Andrej's post:
 
 ## The Solution
 
-Four principles in one file that directly address these issues:
+Four principles, shared across the skill and editor-specific formats, directly address these issues:
 
 | Principle | Addresses |
 |-----------|-----------|
@@ -101,11 +101,25 @@ Strong success criteria let the LLM loop independently. For vague criteria ("mak
 
 ## Install
 
-**Option A: Claude Code Plugin (recommended)**
+### Codex and OpenCode
+
+Use the portable [`karpathy-guidelines` skill](skills/karpathy-guidelines/SKILL.md). No Claude Code or Cursor installation is required.
+
+1. Clone or download **this fork**, `michaelchamboko/andrej-karpathy-skills`.
+2. Copy the entire `skills/karpathy-guidelines` directory into your target project's `.agents/skills/` directory, producing `.agents/skills/karpathy-guidelines/SKILL.md`. If a copy already exists, compare and merge your customizations before replacing it.
+3. Open that project in Codex or OpenCode and ask it to use `karpathy-guidelines` for a coding task. Confirm that the skill appears in the host's available skills; restart the host if it has not refreshed discovery.
+
+Both hosts support this project location; see the official [Codex skill documentation](https://developers.openai.com/codex/skills/) and [OpenCode skill documentation](https://opencode.ai/docs/skills/). The `skills/` directory at this repository's root is the distribution source, not the project discovery location.
+
+Skills load when selected or matched to a task; installing this skill does not make every rule an always-on instruction. For always-on project guidance, merge the desired rules into your existing `AGENTS.md`, preserving the project's instructions and shared-policy references.
+
+### Other supported hosts
+
+**Claude Code plugin (optional)**
 
 From within Claude Code, first add the marketplace:
 ```
-/plugin marketplace add forrestchang/andrej-karpathy-skills
+/plugin marketplace add michaelchamboko/andrej-karpathy-skills
 ```
 
 Then install the plugin:
@@ -115,17 +129,17 @@ Then install the plugin:
 
 This installs the guidelines as a Claude Code plugin, making the skill available across all your projects.
 
-**Option B: CLAUDE.md (per-project)**
+**CLAUDE.md (optional, per-project)**
 
 New project:
 ```bash
-curl -o CLAUDE.md https://raw.githubusercontent.com/forrestchang/andrej-karpathy-skills/main/CLAUDE.md
+curl -o CLAUDE.md https://raw.githubusercontent.com/michaelchamboko/andrej-karpathy-skills/main/CLAUDE.md
 ```
 
 Existing project (append):
 ```bash
 echo "" >> CLAUDE.md
-curl https://raw.githubusercontent.com/forrestchang/andrej-karpathy-skills/main/CLAUDE.md >> CLAUDE.md
+curl https://raw.githubusercontent.com/michaelchamboko/andrej-karpathy-skills/main/CLAUDE.md >> CLAUDE.md
 ```
 
 ## Using with Cursor
@@ -151,7 +165,7 @@ These guidelines are working if you see:
 
 ## Customization
 
-These guidelines are designed to be merged with project-specific instructions. Add them to your existing `CLAUDE.md` or create a new one.
+These guidelines are designed to be merged with project-specific instructions. For Codex and OpenCode, merge selected rules into the existing `AGENTS.md`; for Claude Code, use `CLAUDE.md`. Preserve existing instructions and shared-policy references.
 
 For project-specific rules, add sections like:
 
