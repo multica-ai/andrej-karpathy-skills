@@ -1,0 +1,43 @@
+{
+  "name": "andrej-karpathy-skills",
+  "version": "1.0.0",
+  "description": "Karpathy-inspired coding guidelines that help any coding agent think before coding, prefer simplicity, make surgical changes, and execute against verifiable goals.",
+  "author": {
+    "name": "Jiayuan Zhang",
+    "url": "https://multica.ai"
+  },
+  "homepage": "https://multica.ai",
+  "repository": "https://github.com/multica-ai/andrej-karpathy-skills",
+  "license": "MIT",
+  "keywords": [
+    "guidelines",
+    "best-practices",
+    "coding",
+    "karpathy",
+    "skills",
+    "agents",
+    "coding-agents"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Karpathy Guidelines",
+    "shortDescription": "Four principles that reduce common LLM coding mistakes",
+    "longDescription": "Karpathy-inspired behavioral guidelines for coding agents: Think Before Coding, Simplicity First, Surgical Changes, and Goal-Driven Execution.\n\nUse them when writing, reviewing, or refactoring code to surface assumptions, avoid overcomplication, keep diffs focused, and turn tasks into verifiable success criteria. The skill content matches the guidelines in CLAUDE.md and the Cursor project rule.",
+    "developerName": "Jiayuan Zhang",
+    "category": "Coding",
+    "capabilities": [
+      "Coding guidelines",
+      "Diff discipline",
+      "Goal-driven execution"
+    ],
+    "websiteURL": "https://multica.ai",
+    "brandColor": "#0B0B0C",
+    "logo": "./assets/logo.svg",
+    "composerIcon": "./assets/logo.svg",
+    "defaultPrompt": [
+      "Apply the four Karpathy guidelines before coding",
+      "Review this change for overcomplication and drive-by edits",
+      "Turn this task into verifiable success criteria"
+    ]
+  }
+}
