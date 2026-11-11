@@ -10,7 +10,7 @@
   "homepage": "https://multica.ai",
   "repository": "https://github.com/multica-ai/andrej-karpathy-skills",
   "license": "MIT",
-  "keywords": ["guidelines", "best-practices", "coding", "karpathy"],
+  "keywords": ["guidelines", "best-practices", "coding", "karpathy", "coding-agents"],
   "icon": "./assets/logo.svg",
   "skills": ["./skills/karpathy-guidelines"]
 }

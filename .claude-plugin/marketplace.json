@@ -9,6 +9,7 @@
   "plugins": [
     {
       "name": "andrej-karpathy-skills",
+      "displayName": "Karpathy Guidelines",
       "source": "./",
       "description": "Behavioral guidelines to reduce common LLM coding mistakes: Think Before Coding, Simplicity First, Surgical Changes, Goal-Driven Execution",
       "version": "1.0.0",
@@ -23,7 +24,8 @@
         "guidelines",
         "best-practices",
         "coding",
-        "karpathy"
+        "karpathy",
+        "coding-agents"
       ],
       "category": "workflow"
     }

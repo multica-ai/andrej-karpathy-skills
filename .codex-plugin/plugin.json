@@ -1,6 +1,6 @@
 {
   "name": "andrej-karpathy-skills",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Karpathy-inspired coding guidelines that help any coding agent think before coding, prefer simplicity, make surgical changes, and execute against verifiable goals.",
   "author": {
     "name": "Jiayuan Zhang",
@@ -15,7 +15,8 @@
     "coding",
     "karpathy",
     "skills",
-    "agents"
+    "agents",
+    "coding-agents"
   ],
   "skills": "./skills/",
   "interface": {
