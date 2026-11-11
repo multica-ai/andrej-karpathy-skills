@@ -1,12 +1,10 @@
 {
   "name": "karpathy-skills",
-  "id": "karpathy-skills",
+  "description": "Karpathy-inspired coding guidelines for any coding agent",
+  "version": "1.0.0",
   "owner": {
-    "name": "forrestchang"
-  },
-  "metadata": {
-    "description": "Behavioral guidelines to reduce common LLM coding mistakes, derived from Andrej Karpathy's observations",
-    "version": "1.0.0"
+    "name": "Jiayuan Zhang",
+    "url": "https://multica.ai"
   },
   "plugins": [
     {
@@ -15,8 +13,12 @@
       "description": "Behavioral guidelines to reduce common LLM coding mistakes: Think Before Coding, Simplicity First, Surgical Changes, Goal-Driven Execution",
       "version": "1.0.0",
       "author": {
-        "name": "forrestchang"
+        "name": "Jiayuan Zhang",
+        "url": "https://multica.ai"
       },
+      "homepage": "https://github.com/multica-ai/andrej-karpathy-skills",
+      "repository": "https://github.com/multica-ai/andrej-karpathy-skills",
+      "license": "MIT",
       "keywords": [
         "guidelines",
         "best-practices",

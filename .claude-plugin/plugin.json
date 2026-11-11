@@ -1,11 +1,16 @@
 {
   "name": "andrej-karpathy-skills",
-  "description": "Behavioral guidelines to reduce common LLM coding mistakes, derived from Andrej Karpathy's observations on LLM coding pitfalls",
+  "displayName": "Karpathy Guidelines",
+  "description": "Karpathy-inspired coding guidelines that help any coding agent think before coding, prefer simplicity, make surgical changes, and execute against verifiable goals.",
   "version": "1.0.0",
   "author": {
-    "name": "forrestchang"
+    "name": "Jiayuan Zhang",
+    "url": "https://multica.ai"
   },
+  "homepage": "https://github.com/multica-ai/andrej-karpathy-skills",
+  "repository": "https://github.com/multica-ai/andrej-karpathy-skills",
   "license": "MIT",
   "keywords": ["guidelines", "best-practices", "coding", "karpathy"],
+  "icon": "./assets/logo.svg",
   "skills": ["./skills/karpathy-guidelines"]
 }
