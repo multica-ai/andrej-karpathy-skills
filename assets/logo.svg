@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Karpathy Guidelines">
+  <rect width="64" height="64" rx="12" fill="#1B2A41"/>
+  <path fill="#F4F7FA" d="M18 14h8v16.2L40.4 14H50L34.1 32.1 50 50h-9.8L26 33.6V50h-8V14z"/>
+</svg>
