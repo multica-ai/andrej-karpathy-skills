@@ -1,10 +1,10 @@
-# 受 Karpathy 启发的 Claude Code 指南
+# 受 Karpathy 启发的编码指南
 
 > 查看我的新项目 [Multica](https://github.com/multica-ai/multica) —— 一个用于运行和管理编码智能体的开源平台，支持可复用的技能。
 >
 > 在 X 上关注我：[https://x.com/jiayuan_jy](https://x.com/jiayuan_jy)
 
-一个单一的 `CLAUDE.md` 文件，用于改善 Claude Code 的行为，源自 [Andrej Karpathy 的观察](https://x.com/karpathy/status/2015883857489522876) 关于 LLM 编码陷阱的总结。
+面向任意编码智能体的 Karpathy 启发编码指南，源自 [Andrej Karpathy 的观察](https://x.com/karpathy/status/2015883857489522876) 关于 LLM 编码陷阱的总结。可通过智能体插件市场安装，也可作为项目根指令文件 / Cursor 规则直接使用。
 
 [English](./README.md) | 简体中文
 
@@ -98,11 +98,11 @@ LLM 经常默默选择一种解释然后执行。这个原则强制明确推理�
 
 ## 安装
 
-**选项 A：Claude Code 插件（推荐）**
+**Claude Code**
 
 在 Claude Code 中，首先添加插件市场：
 ```
-/plugin marketplace add forrestchang/andrej-karpathy-skills
+/plugin marketplace add multica-ai/andrej-karpathy-skills
 ```
 
 然后安装插件：
@@ -110,24 +110,38 @@ LLM 经常默默选择一种解释然后执行。这个原则强制明确推理�
 /plugin install andrej-karpathy-skills@karpathy-skills
 ```
 
-这会将指南安装为 Claude Code 插件，使其在你所有项目中可用。
+仓库仍保持根目录即插件的布局（`source: "./"`），因此上述安装路径继续有效。
 
-**选项 B：CLAUDE.md（按项目）**
+**Codex**
+
+将本仓库添加为 marketplace，然后安装插件：
+```bash
+codex plugin marketplace add multica-ai/andrej-karpathy-skills
+codex plugin add andrej-karpathy-skills@karpathy-skills
+```
+
+或在 Codex 中打开 `/plugins`，从市场安装 **Karpathy Guidelines**。
+
+**其他智能体（通用 `.agents` 市场）**
+
+本仓库提供 `.agents/plugins/marketplace.json`，本地插件源路径为 `./`。支持 Agent Skills / `.agents` 市场格式的智能体可将本仓库添加为 marketplace，并安装 `andrej-karpathy-skills`。
+
+**按项目指令文件**
 
 新项目：
 ```bash
-curl -o CLAUDE.md https://raw.githubusercontent.com/forrestchang/andrej-karpathy-skills/main/CLAUDE.md
+curl -o CLAUDE.md https://raw.githubusercontent.com/multica-ai/andrej-karpathy-skills/main/CLAUDE.md
 ```
 
 已有项目（追加）：
 ```bash
 echo "" >> CLAUDE.md
-curl https://raw.githubusercontent.com/forrestchang/andrej-karpathy-skills/main/CLAUDE.md >> CLAUDE.md
+curl https://raw.githubusercontent.com/multica-ai/andrej-karpathy-skills/main/CLAUDE.md >> CLAUDE.md
 ```
 
 ## 在 Cursor 中使用
 
-本仓库包含一个已提交的 Cursor 项目规则 ([`.cursor/rules/karpathy-guidelines.mdc`](.cursor/rules/karpathy-guidelines.mdc))，因此在 Cursor 中打开项目时同样适用这些指南。详情请参见 **[CURSOR.md](CURSOR.md)**，包括如何在其他项目中使用该规则，以及它与 Claude Code 的关系。
+本仓库包含一个已提交的 Cursor 项目规则 ([`.cursor/rules/karpathy-guidelines.mdc`](.cursor/rules/karpathy-guidelines.mdc))，因此在 Cursor 中打开项目时同样适用这些指南。详情请参见 **[CURSOR.md](CURSOR.md)**，包括如何在其他项目中使用该规则，以及它与其他智能体的关系。
 
 ## 核心洞察
 
@@ -148,7 +162,7 @@ curl https://raw.githubusercontent.com/forrestchang/andrej-karpathy-skills/main/
 
 ## 定制
 
-这些指南设计用于与项目特定指令合并。将它们添加到你现有的 `CLAUDE.md` 或创建一个新的。
+这些指南设计用于与项目特定指令合并。将它们添加到你现有的智能体指令文件，或创建一个新文件。
 
 对于项目特定规则，添加如下章节：
 

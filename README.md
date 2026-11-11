@@ -1,10 +1,10 @@
-# Karpathy-Inspired Claude Code Guidelines
+# Karpathy-Inspired Coding Guidelines
 
 > Check out my new project [Multica](https://github.com/multica-ai/multica) — an open-source platform for running and managing coding agents with reusable skills.
 >
 > Follow me on X: [https://x.com/jiayuan_jy](https://x.com/jiayuan_jy)
 
-A single `CLAUDE.md` file to improve Claude Code behavior, derived from [Andrej Karpathy's observations](https://x.com/karpathy/status/2015883857489522876) on LLM coding pitfalls.
+Karpathy-inspired coding guidelines for any coding agent, derived from [Andrej Karpathy's observations](https://x.com/karpathy/status/2015883857489522876) on LLM coding pitfalls. Install from agent marketplaces, or drop the guidelines into a project as a root instruction file / Cursor rule.
 
 English | [简体中文](./README.zh.md)
 
@@ -98,11 +98,11 @@ Strong success criteria let the LLM loop independently. Weak criteria ("make it 
 
 ## Install
 
-**Option A: Claude Code Plugin (recommended)**
+**Claude Code**
 
 From within Claude Code, first add the marketplace:
 ```
-/plugin marketplace add forrestchang/andrej-karpathy-skills
+/plugin marketplace add multica-ai/andrej-karpathy-skills
 ```
 
 Then install the plugin:
@@ -110,24 +110,38 @@ Then install the plugin:
 /plugin install andrej-karpathy-skills@karpathy-skills
 ```
 
-This installs the guidelines as a Claude Code plugin, making the skill available across all your projects.
+This keeps the existing root-as-plugin layout (`source: "./"`), so the install path above continues to work.
 
-**Option B: CLAUDE.md (per-project)**
+**Codex**
+
+Add the repository as a marketplace, then install the plugin:
+```bash
+codex plugin marketplace add multica-ai/andrej-karpathy-skills
+codex plugin add andrej-karpathy-skills@karpathy-skills
+```
+
+Or open `/plugins` in Codex and install **Karpathy Guidelines** from the marketplace.
+
+**Other agents (generic `.agents` marketplace)**
+
+This repo ships `.agents/plugins/marketplace.json` with a local plugin source at `./`. Agents that consume the Agent Skills / `.agents` marketplace format can add this repository as a marketplace and install `andrej-karpathy-skills`.
+
+**Per-project instruction file**
 
 New project:
 ```bash
-curl -o CLAUDE.md https://raw.githubusercontent.com/forrestchang/andrej-karpathy-skills/main/CLAUDE.md
+curl -o CLAUDE.md https://raw.githubusercontent.com/multica-ai/andrej-karpathy-skills/main/CLAUDE.md
 ```
 
 Existing project (append):
 ```bash
 echo "" >> CLAUDE.md
-curl https://raw.githubusercontent.com/forrestchang/andrej-karpathy-skills/main/CLAUDE.md >> CLAUDE.md
+curl https://raw.githubusercontent.com/multica-ai/andrej-karpathy-skills/main/CLAUDE.md >> CLAUDE.md
 ```
 
 ## Using with Cursor
 
-This repository includes a committed Cursor project rule ([`.cursor/rules/karpathy-guidelines.mdc`](.cursor/rules/karpathy-guidelines.mdc)) so the same guidelines apply when you open the project in Cursor. See **[CURSOR.md](CURSOR.md)** for setup, using the rule in other projects, and how this relates to Claude Code.
+This repository includes a committed Cursor project rule ([`.cursor/rules/karpathy-guidelines.mdc`](.cursor/rules/karpathy-guidelines.mdc)) so the same guidelines apply when you open the project in Cursor. See **[CURSOR.md](CURSOR.md)** for setup, using the rule in other projects, and how this relates to other agents.
 
 ## Key Insight
 
@@ -148,7 +162,7 @@ These guidelines are working if you see:
 
 ## Customization
 
-These guidelines are designed to be merged with project-specific instructions. Add them to your existing `CLAUDE.md` or create a new one.
+These guidelines are designed to be merged with project-specific instructions. Add them to your existing agent instruction file or create a new one.
 
 For project-specific rules, add sections like:
 
