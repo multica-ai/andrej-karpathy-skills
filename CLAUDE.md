@@ -60,6 +60,105 @@ For multi-step tasks, state a brief plan:
 
 Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
 
+
+## 5. Reviewable Delivery: Stacked PRs
+
+**A reviewer should read each PR in one sitting and know exactly what it changes.**
+
+Smaller diffs help, but a feature that needs 1,500 lines still needs them. Split by *concern* into a linear stack where each PR is based on the one below it.
+
+### When to stack
+
+Total change > ~400 lines (excluding lockfiles/generated code), or it mixes concerns (tests + refactor + behavior). Otherwise ship one PR.
+
+### Plan the stack before writing code
+
+Propose it as part of step 1 and get agreement:
+```
+feat-x/01-tests    tests + fixtures for new behavior        ~600  skim
+feat-x/02-prep     mechanical refactor, no behavior change  ~150
+feat-x/03-schema   models, migrations, typed schemas        ~80
+feat-x/04-core     business logic                           ~250
+feat-x/05-wire     API / tasks / consumers / config / flag  ~100
+```
+
+### Layer order (bottom → top)
+
+1. **Tests & fixtures** - large but cheap to review. New-behavior tests are marked expected-fail (e.g. `@pytest.mark.xfail(strict=True, reason="feat-x/04-core")`) so this layer is green on its own. Characterization tests that pin current behavior go here too; they guard the refactor above.
+2. **Prep** - renames, moves, extracted helpers, plumbing. Zero behavior change; existing tests pass untouched. Supporting changes live here so later diffs are pure logic.
+3. **Schema / data** - models, migrations, typed schemas. Backward-compatible with the code below it.
+4. **Core logic** - the actual behavior. Removes the `xfail` markers it satisfies, so the diff shows exactly which tests it makes pass.
+5. **Wiring** - endpoints, tasks, consumers, config, feature flag. Smallest surface that touches production.
+
+Drop layers you don't need. Split a layer further if its non-test diff exceeds ~400 lines.
+
+### Rules per PR
+
+- One concern. If the title needs "and", split it.
+- Green on its own: CI passes at every layer, so the stack is bisectable and can merge bottom-up at any point.
+- A fix belongs in the lowest layer that owns it. Never patch a lower layer's mistake in a higher PR.
+- Branches and commits are built locally; push and open PRs only when the user asks.
+
+### Mechanics (plain git ≥ 2.38 + gh)
+
+One commit per layer, one branch per layer, all on one line of history. Keep the top branch checked out; `--update-refs` moves every lower branch pointer along with it.
+
+Build bottom-up:
+```bash
+git checkout -b feat-x/01-tests origin/main   # commit layer 1
+git checkout -b feat-x/02-prep                   # commit layer 2 on top
+# ... one branch per layer
+```
+
+Change a lower layer (review feedback, a need discovered higher up). The change travels up the stack automatically:
+```bash
+# on the top branch: make the edit, then
+git commit --fixup=<commit-of-layer-N>
+GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash --update-refs origin/main
+git rebase --exec "<test command>" origin/main     # every layer still passes
+git push --force-with-lease origin feat-x/01-tests feat-x/02-prep ...
+```
+Resolve conflicts at the layer where they occur; don't hand-edit upper branches to mask them.
+
+Open PRs, each based on the branch below:
+```bash
+gh pr create --base main            --head feat-x/01-tests ...
+gh pr create --base feat-x/01-tests --head feat-x/02-prep  ...
+```
+
+After the bottom PR merges (squash/rebase merges rewrite its commit, so replay the rest onto the target):
+```bash
+git fetch origin
+git rebase --update-refs --onto origin/main feat-x/01-tests feat-x/05-wire
+gh pr edit <next-pr> --base main
+git push --force-with-lease origin feat-x/02-prep ... feat-x/05-wire
+```
+
+### PR description
+
+```
+**Stack 2/5 · feat-x**
+1. #101 tests & fixtures
+2. #102 prep  ← this PR
+3. #103 schema
+...
+**What this layer does:** one or two sentences.
+**Review focus:** the files/functions that need real attention.
+**Skim-OK:** fixtures, generated code, mechanical renames.
+**Not in this PR:** what lands in later layers, so reviewers don't ask.
+```
+
+### AI review per layer
+
+Review each layer's own diff, never the cumulative one:
+- Locally: `git diff feat-x/01-tests...feat-x/02-prep`. Once PRs exist, review the PR itself; its diff is against the parent branch.
+- Use a fresh-context reviewer (a subagent or separate session). Give it the diff and the layer's stated intent, not your reasoning, so it isn't anchored on your conclusions.
+- Check that the layer does only what its title says. Anything else is a layer violation: move it to the layer that owns it.
+- Fix findings in the owning layer via fixup + rebase above, then re-review the layers that changed.
+- Report findings per layer to the user or on the PR; none dropped silently.
+
+The test: a reviewer understands any PR by reading only it and its description, every layer passes CI, and the top of the stack passes the full suite.
+
 ---
 
-**These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+**These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, clarifying questions come before implementation rather than after mistakes, and large changes arrive as small PRs each reviewable in one sitting.
