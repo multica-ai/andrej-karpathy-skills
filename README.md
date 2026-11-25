@@ -37,10 +37,12 @@ Four principles in one file that directly address these issues:
 
 LLMs often pick an interpretation silently and run with it. This principle forces explicit reasoning:
 
+- **Inspect existing code and tests** — Understand relevant patterns and baseline behavior before editing
 - **State assumptions explicitly** — If uncertain, ask rather than guess
 - **Present multiple interpretations** — Don't pick silently when ambiguity exists
 - **Push back when warranted** — If a simpler approach exists, say so
-- **Stop when confused** — Name what's unclear and ask for clarification
+- **Ask only for consequential uncertainty** — If ambiguity would change implementation or risk, stop and name the missing decision
+- **Use reversible assumptions carefully** — For low-risk gaps, proceed with a stated assumption when it is safe to correct later
 
 ### 2. Simplicity First
 
@@ -51,7 +53,8 @@ Combat the tendency toward overengineering:
 - No features beyond what was asked
 - No abstractions for single-use code
 - No "flexibility" or "configurability" that wasn't requested
-- No error handling for impossible scenarios
+- Handle plausible failure modes explicitly; don't silently swallow unexpected errors
+- Preserve existing behavior outside the requested change
 - If 200 lines could be 50, rewrite it
 
 **The test:** Would a senior engineer say this is overcomplicated? If yes, simplify.
@@ -95,6 +98,14 @@ For multi-step tasks, state a brief plan:
 ```
 
 Strong success criteria let the LLM loop independently. Weak criteria ("make it work") require constant clarification.
+
+Validation should match the change:
+
+- Start by locating the smallest relevant test or check
+- Run targeted tests or checks before and after behavior changes when practical
+- Run broader test, lint, or build suites when regressions could cross component boundaries
+- Surface failures and unresolved risks rather than claiming success from an unrun or failing check
+- Documentation-only changes do not need a code test, but should be reviewed for consistency
 
 ## Install
 

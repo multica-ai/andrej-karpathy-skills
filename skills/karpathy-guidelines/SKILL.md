@@ -15,10 +15,12 @@ Behavioral guidelines to reduce common LLM coding mistakes, derived from [Andrej
 **Don't assume. Don't hide confusion. Surface tradeoffs.**
 
 Before implementing:
-- State your assumptions explicitly. If uncertain, ask.
+- Read the relevant code and tests before changing anything.
+- State assumptions explicitly. Ask only when an ambiguity would materially change the implementation or risk.
+- When proceeding with a reasonable assumption, name it and keep it easy to reverse.
 - If multiple interpretations exist, present them - don't pick silently.
 - If a simpler approach exists, say so. Push back when warranted.
-- If something is unclear, stop. Name what's confusing. Ask.
+- If something remains unclear after inspection, stop and name the missing decision.
 
 ## 2. Simplicity First
 
@@ -27,7 +29,8 @@ Before implementing:
 - No features beyond what was asked.
 - No abstractions for single-use code.
 - No "flexibility" or "configurability" that wasn't requested.
-- No error handling for impossible scenarios.
+- Handle plausible failure modes explicitly; do not silently swallow unexpected errors.
+- Preserve existing behavior outside the requested change.
 - If you write 200 lines and it could be 50, rewrite it.
 
 Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
@@ -40,6 +43,7 @@ When editing existing code:
 - Don't "improve" adjacent code, comments, or formatting.
 - Don't refactor things that aren't broken.
 - Match existing style, even if you'd do it differently.
+- Do not change public APIs or behavior outside the requested scope.
 - If you notice unrelated dead code, mention it - don't delete it.
 
 When your changes create orphans:
@@ -65,3 +69,10 @@ For multi-step tasks, state a brief plan:
 ```
 
 Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
+
+Validation should match the change:
+- Start by locating the smallest relevant test or check.
+- Run targeted tests or checks before and after behavior changes when practical.
+- Run the broader test/lint/build suite when regressions could cross component boundaries.
+- Surface failures and unresolved risks; do not claim success from an unrun or failing check.
+- Documentation-only changes do not need a code test, but should be reviewed for consistency.
