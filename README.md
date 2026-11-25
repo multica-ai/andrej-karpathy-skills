@@ -20,7 +20,7 @@ From Andrej's post:
 
 ## The Solution
 
-Four principles in one file that directly address these issues:
+Five principles in one file that directly address these issues:
 
 | Principle | Addresses |
 |-----------|-----------|
@@ -28,8 +28,9 @@ Four principles in one file that directly address these issues:
 | **Simplicity First** | Overcomplication, bloated abstractions |
 | **Surgical Changes** | Orthogonal edits, touching code you shouldn't |
 | **Goal-Driven Execution** | Leverage through tests-first, verifiable success criteria |
+| **Reviewable Delivery** | Huge, unreviewable diffs |
 
-## The Four Principles in Detail
+## The Five Principles in Detail
 
 ### 1. Think Before Coding
 
@@ -96,6 +97,26 @@ For multi-step tasks, state a brief plan:
 
 Strong success criteria let the LLM loop independently. Weak criteria ("make it work") require constant clarification.
 
+### 5. Reviewable Delivery
+
+**A reviewer should read each PR in one sitting and know exactly what it changes.**
+
+Small diffs alone don't fix 1,500-line agent PRs: some features genuinely need that much code. So split by concern into a linear stack of PRs, each based on the one below:
+
+| Layer | Contains |
+|-------|----------|
+| 1. Tests & fixtures | Large but skimmable. New-behavior tests marked `xfail(strict=True)` so the layer is green on its own |
+| 2. Prep | Renames, moves, plumbing. Zero behavior change |
+| 3. Schema / data | Models, migrations, typed schemas |
+| 4. Core logic | The behavior. Removes the `xfail` markers it satisfies |
+| 5. Wiring | Endpoints, tasks, config, feature flag |
+
+- **One concern per PR**, every layer green in CI, non-test diff ≤ ~400 lines
+- **Fixes go in the lowest layer that owns them** and propagate up with `git rebase --autosquash --update-refs` (plain git ≥ 2.38, no extra tooling)
+- **AI review per layer**, on that layer's diff only, by a fresh-context reviewer
+
+**The test:** A reviewer understands any PR by reading only it and its description.
+
 ## Install
 
 **Option A: Claude Code Plugin (recommended)**
@@ -145,6 +166,7 @@ These guidelines are working if you see:
 - **Fewer rewrites due to overcomplication** — Code is simple the first time
 - **Clarifying questions come before implementation** — Not after mistakes
 - **Clean, minimal PRs** — No drive-by refactoring or "improvements"
+- **Large changes arrive as a stack of small PRs** — Each reviewable in one sitting
 
 ## Customization
 
